@@ -9,13 +9,11 @@ export default function Navbar() {
 
   const searchInputHandler = (e) => {
     setSearchTerm(e.target.value);
-    if (e.target.value.trim() === "") {
-      navigate("/", { replace: true });
-    } else {
+    setTimeout(() => {
       const searchParams = new URLSearchParams(location.search);
       searchParams.set("q", e.target.value);
       navigate(`/search?${searchParams.toString()}`, { replace: true });
-    }
+    }, 2000);
   };
 
   const searchHandler = (e) => {

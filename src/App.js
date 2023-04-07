@@ -25,39 +25,35 @@ const Layout = () => {
       }
     });
   }, []);
-
-  if (navigation.state === "loading") return <Spinner />;
-  else
-    return (
-      <>
-        <header>
-          <Navbar />
-        </header>
-        <main>
-          <Outlet />
-        </main>
-        {topBtn && (
-          <button
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: "smooth",
-              })
-            }
-            className="w-12 h-12 rounded-full flex justify-center items-center bg-gradient-to-r from-[#ff9900] to-[#ccccff] fixed bottom-6 right-6 text-2xl opacity-40 hover:opacity-100"
-          >
-            <ion-icon name="arrow-up"></ion-icon>
-          </button>
-        )}
-      </>
-    );
+  return (
+    <>
+      <header>
+        <Navbar />
+      </header>
+      <main>{navigation.state === "loading" ? <Spinner /> : <Outlet />}</main>
+      {topBtn && (
+        <button
+          onClick={() =>
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth",
+            })
+          }
+          className="w-12 h-12 rounded-full flex justify-center items-center bg-gradient-to-r from-[#ff9900] to-[#ccccff] fixed bottom-6 right-6 text-2xl opacity-40 hover:opacity-100"
+        >
+          <ion-icon name="arrow-up"></ion-icon>
+        </button>
+      )}
+    </>
+  );
 };
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -68,7 +64,6 @@ const router = createBrowserRouter([
         ),
         loader: () =>
           fetch("https:///www.themealdb.com/api/json/v1/1/search.php?s="),
-        errorElement: <ErrorPage />,
       },
       {
         path: "/category/:category",
@@ -81,7 +76,6 @@ const router = createBrowserRouter([
           fetch(
             `https://www.themealdb.com/api/json/v1/1/filter.php?c=${params.category}`
           ),
-        errorElement: <ErrorPage />,
       },
       {
         path: "/search",
@@ -90,7 +84,6 @@ const router = createBrowserRouter([
             <Banner /> <FoodRecipe />
           </>
         ),
-        errorElement: <ErrorPage />,
       },
       {
         path: "/recipe/:id",
@@ -99,9 +92,12 @@ const router = createBrowserRouter([
           fetch(
             `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
           ),
-        errorElement: <ErrorPage />,
       },
     ],
+  },
+  {
+    path: "/*",
+    element: <ErrorPage />,
   },
 ]);
 
