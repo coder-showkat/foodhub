@@ -7,6 +7,13 @@ export default function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const searchInputHandler = (e) => {
+        setSearchTerm(e.target.value);
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set('q', e.target.value);
+        navigate(`/search?${searchParams.toString()}`);
+    }
+
 
     const searchHandler = (e) => {
         e.preventDefault();
@@ -31,7 +38,7 @@ export default function Navbar() {
                         aria-expanded="false" aria-label="Toggle navigation"></div>
                     <div className="hidden sm:block w-full sm:w-auto" id="navbarSupportedContent1" data-te-collapse-item>
                         <form id="search-field" onSubmit={(e)=>searchHandler(e)} className="relative flex flex-wrap items-stretch mt-6 sm:mt-0">
-                            <input type="search" id="input-search" onChange={(e)=>setSearchTerm(e.target.value)} value={searchTerm}
+                            <input type="search" id="input-search" onChange={searchInputHandler} value={searchTerm}
                                 className="relative m-0 -mr-px block w-[1%] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out dark:text-neutral-200 dark:placeholder:text-neutral-200"
                                 placeholder="Search" aria-label="Search" aria-describedby="button-addon1" />
 
